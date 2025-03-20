@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import { UsuarioEntity } from "./usuario.entity"
+import { error } from "console"
 
 @Injectable()
 export class UsuarioRepositoy {
@@ -20,6 +21,25 @@ export class UsuarioRepositoy {
         )
 
         return possivelUsuario !== undefined
+    }
+
+    async atualiza(id: string, dadosDeAtualizacao: Partial<UsuarioEntity>) {
+        const possivelUsuario = this.usuarios.find(
+            usuaruiSalvo => usuaruiSalvo.id === id
+        )
+        if (!possivelUsuario) {
+            throw new Error('Usuario n encontrado!')
+        }
+
+        Object.entries(dadosDeAtualizacao).forEach(([chave, valor]) => {
+            if (chave === 'id') {
+                return;
+            }
+
+            possivelUsuario[chave] = valor
+        })
+
+        return possivelUsuario;
     }
 
 }
