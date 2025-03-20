@@ -6,4 +6,8 @@ export class UsuarioRepositoy {
         console.log(this.usuarios)
     }
 
+    async listar() {
+        return this.usuarios
+    }
+
 }
