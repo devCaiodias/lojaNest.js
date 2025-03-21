@@ -1,6 +1,5 @@
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from "class-validator"
 import { EmailEhUnico } from "../validacao/email-eh-unico.validator"
-import { Optional } from "@nestjs/common"
 
 export class AtualizaUsuario {
 
