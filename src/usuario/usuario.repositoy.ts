@@ -23,7 +23,7 @@ export class UsuarioRepositoy {
         return possivelUsuario !== undefined
     }
 
-    async atualiza(id: string, dadosDeAtualizacao: Partial<UsuarioEntity>) {
+    private buscaPorId(id: string) {
         const possivelUsuario = this.usuarios.find(
             usuaruiSalvo => usuaruiSalvo.id === id
         )
@@ -31,15 +31,33 @@ export class UsuarioRepositoy {
             throw new Error('Usuario n encontrado!')
         }
 
+        return possivelUsuario;
+    }
+
+    async atualiza(id: string, dadosDeAtualizacao: Partial<UsuarioEntity>) {
+        
+        const usuarioId = this.buscaPorId(id)
+
         Object.entries(dadosDeAtualizacao).forEach(([chave, valor]) => {
             if (chave === 'id') {
                 return;
             }
 
-            possivelUsuario[chave] = valor
+            usuarioId[chave] = valor
         })
 
-        return possivelUsuario;
+        return usuarioId;
+    }
+
+
+    async remove(id: string) {
+        const usuario = this.buscaPorId(id)
+
+        this.usuarios = this.usuarios.filter(
+            usuarioSalvo => usuarioSalvo.id !== id
+        )
+
+        return usuario;
     }
 
 }
