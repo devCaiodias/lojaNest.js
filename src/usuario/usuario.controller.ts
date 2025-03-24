@@ -5,11 +5,15 @@ import { UsuarioEntity } from "./usuario.entity";
 import { v4 as uuid } from "uuid";
 import { ListaUsuarioDTO } from "./dto/ListaUsuario.dto";
 import { AtualizaUsuario } from "./dto/AtualizaUsuarios.dto";
+import { UsuarioService } from "./usuario.service";
 
 @Controller('/usuarios')
 export class UsuarioController {
 
-    constructor(private usuarioRepositoy: UsuarioRepositoy) {
+    constructor(
+        private usuarioRepositoy: UsuarioRepositoy,
+        private usuarioService: UsuarioService
+    ) {
 
     }
 
@@ -28,15 +32,10 @@ export class UsuarioController {
 
     @Get()
     async listaUsuarios() {
-        const usuariosSalvos = await this.usuarioRepositoy.listar()
+        const usuariosSalvos = await this.usuarioService.listaUsuarios()
 
-        const usuarioLista = usuariosSalvos.map(
-            usuario => new ListaUsuarioDTO(
-                usuario.id,
-                usuario.nome
-            )
-        )
-        return usuarioLista
+ 
+        return usuariosSalvos;
     }
 
     @Put('/:id')
