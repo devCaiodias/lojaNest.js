@@ -1,22 +1,26 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    Post,
-    Put,
-  } from '@nestjs/common';
-  import { randomUUID } from 'crypto';
-  
-  import { AtualizaProdutoDTO } from './dto/AtualizaProduto.dto';
-  import { CriaProdutoDTO } from './dto/CriaProduto.dto';
-  import { ProdutoEntity } from './produto.entity';
-  import { ProdutoRepository } from './produto.repository';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { randomUUID } from 'crypto';
+
+import { AtualizaProdutoDTO } from './dto/AtualizaProduto.dto';
+import { CriaProdutoDTO } from './dto/CriaProduto.dto';
+import { ProdutoEntity } from './produto.entity';
+import { ProdutoRepository } from './produto.repository';
+import { ProdutoService } from './produto.service';
   
   @Controller('produtos')
   export class ProdutoController {
-    constructor(private readonly produtoRepository: ProdutoRepository) {}
+    constructor(
+      private readonly produtoRepository: ProdutoRepository,
+      private readonly produtoService: ProdutoService,
+    ) {}
   
     @Post()
     async criaNovo(@Body() dadosProduto: CriaProdutoDTO) {
@@ -32,13 +36,13 @@ import {
       // produto.caracteristicas = dadosProduto.caracteristicas;
       // produto.imagens = dadosProduto.imagens;
   
-      const produtoCadastrado = this.produtoRepository.salvar(produto);
+      const produtoCadastrado = this.produtoService.criaProduto(produto);
       return produtoCadastrado;
     }
   
     @Get()
     async listaTodos() {
-      return this.produtoRepository.listaTodos();
+      return this.produtoService.listProdutos();
     }
   
     @Put('/:id')
@@ -46,7 +50,7 @@ import {
       @Param('id') id: string,
       @Body() dadosProduto: AtualizaProdutoDTO,
     ) {
-      const produtoAlterado = await this.produtoRepository.atualiza(
+      const produtoAlterado = await this.produtoService.atualizaProduto(
         id,
         dadosProduto,
       );
@@ -59,7 +63,7 @@ import {
   
     @Delete('/:id')
     async remove(@Param('id') id: string) {
-      const produtoRemovido = await this.produtoRepository.remove(id);
+      const produtoRemovido = await this.produtoService.deletaProduto(id);
   
       return {
         mensagem: 'produto removido com sucesso',
