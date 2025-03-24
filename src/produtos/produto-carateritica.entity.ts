@@ -1,6 +1,6 @@
 import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm'
 
-@Entity({name: 'produto_caracteristica'})
+@Entity({name: 'produto_caracteristicas'})
 export class ProdutoCaracteristica {
     @PrimaryGeneratedColumn() // Gera automaticamente um ID único para cada registro
     id: number;
