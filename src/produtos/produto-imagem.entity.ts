@@ -1,4 +1,5 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm'
+import {Entity, Column, PrimaryGeneratedColumn, OneToOne} from 'typeorm'
+import { ProdutoEntity } from './produto.entity';
 
 @Entity({name: 'produto_imagens'})
 export class ProdutoImagemEntity {
@@ -8,4 +9,8 @@ export class ProdutoImagemEntity {
     url: string;
     @Column({name: 'descricao', length: 255, nullable: false})
     descricao: string;
+
+    @OneToOne(() => ProdutoEntity,
+    (produto) => produto.imagens, {orphanedRowAction: 'delete',onDelete: 'CASCADE', onUpdate: 'CASCADE'})
+    produto: ProdutoEntity
 }

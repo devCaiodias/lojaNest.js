@@ -10,6 +10,6 @@ export class ProdutoCaracteristicaEntity {
     @Column({name: 'descricao', length: 255, nullable: false})
     descricao: string;
     
-    @OneToOne(() => ProdutoEntity, (produto) => produto.caracteristicas)
+    @OneToOne(() => ProdutoEntity, (produto) => produto.caracteristicas, {orphanedRowAction: 'delete',onDelete: 'CASCADE', onUpdate: 'CASCADE'})
     produto: ProdutoEntity;
 }
