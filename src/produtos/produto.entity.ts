@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from 'typeorm';
+import { ProdutoCaracteristicaEntity } from './produto-carateritica.entity';
+import { ProdutoImagemEntity } from './produto-imagem.entity';
 
 @Entity({ name: 'produtos' })
 export class ProdutoEntity {
@@ -16,6 +18,14 @@ export class ProdutoEntity {
   descricao: string;
   @Column({ name: 'categoria', length: 100, nullable: false })
   categoria: string;
+
+  @OneToMany(() => ProdutoCaracteristicaEntity, 
+  (produtoCaracteristicaEntity) => produtoCaracteristicaEntity.produto)
+  caracteristicas: ProdutoCaracteristicaEntity[];
+  
+  @OneToMany(() => ProdutoImagemEntity,
+  (produtoImagemEntity) => produtoImagemEntity.produto)
+  imagens: ProdutoCaracteristicaEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;
